@@ -78,6 +78,36 @@ def search(query:str):
         print(f"The bookmark with name '{query}' or url '{query}' doesnot exist.")
 
 
+@app.command(help="This command lets you to edit any bookmark that has been registered in the list.")
+def edit(option: str = typer.Option(..., prompt="Choose an option: ", help = "Enter 'a' if you want to change name. Enter 'b' if you want to change url.")):
+    bookmark = load_file()
+    option = option.lower()
+    if option == "a":
+        old = input("Enter the old name: ")
+        if old in bookmark:
+            val = bookmark.pop(old)
+            new = input("Enter the new name: ")
+            bookmark[new] = val
+            save_file(bookmark)
+            print(f"Bookmark with the url '{val}' had it's name changed form '{old}' to '{new}'")
+        else:
+            print(f"Bookmark with name '{old}' does not exists.")
+    elif option =="b":
+        name = input("Enter the name of the bookmark that you want to change: ")
+        if name in bookmark:
+            val = bookmark[name]
+            new = input("Enter the new url: ")
+            bookmark[name] = new
+            save_file(bookmark)
+            print(f"The url of the bookmark '{name}' has been changed from'{val}' to '{new}'")
+        else:
+            print(f"The bookmark with name '{name}' does not exists in the list.")
+    else:
+        print(f"Choose either 'a' or 'b'.")
+
+
+
+
 
 if __name__ == "__main__":
     app()
